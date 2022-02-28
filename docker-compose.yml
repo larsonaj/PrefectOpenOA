@@ -1,0 +1,12 @@
+services:
+  agent:
+    container_name: prefect_agent
+    image: prefect/agent
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 8000:5000
+    env_file:
+      - ./.env
+    environment:
+      PREFECT_API_KEY: ${PREFECT_API_KEY}
