@@ -1,8 +1,11 @@
 import prefect
 from prefect.tasks import databricks
 
-def run_dbx_notebook(nb_path, azure_conn, cluster_id):
+def run_dbx_notebook(nb_path, cluster_id):
     
+    conn = {"host":"adb-7101253137415266.6.azuredatabricks.net",
+           "token":"dapibf1a2e725dbe5a79cd1dd14a9a55dcbd"}
+
     json = {'cluster_id': cluster_id,
             'notebook_task': {
                 'notebook_path': nb_path 
@@ -11,4 +14,4 @@ def run_dbx_notebook(nb_path, azure_conn, cluster_id):
     
     run = databricks.DatabricksSubmitRun(json=json)
     
-    run(databricks_conn_secret=azure_conn)
+    run(databricks_conn_secret=conn)
