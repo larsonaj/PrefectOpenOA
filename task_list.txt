@@ -1,0 +1,28 @@
+Python >3.7 Installed
+
+0. Clone repo THIS ONE YOU DUMMY
+1. Create new venv
+    a. conda create NAME python=3.7
+    b. python3 -m venv /path/to/new/virtual/environment
+2. Activate environment
+    a. conda activate NAME
+    b. python3 myenv\Scripts\activate.bat
+3. Install requirements.txt
+    a. pip install -r requirements.txt
+4. Test drive the demo
+    a. See Demo folder and demo_flow.py for instructions
+5. Create prefect account
+    a. https://www.prefect.io/
+6. Create an API Key
+    a. Save this somewhere safe and not in your repo
+7. LOGIN TO PREFECT CLOUD CLI
+    a. prefect auth login -k YOUR_API_KEY_HERE
+    a. https://docs.prefect.io/api/latest/cli/auth.html 
+8. Spin up Local Prefect Agent on machine
+    a. prefect agent local start
+9. Register your flow with your agent
+    a. prefect register --project PROJECT_NAME -p demo_flow.py
+    b. https://docs.prefect.io/api/latest/cli/register.html?#register
+10. Run flow from Prefect UI
+    a. Run tab
+    b. Give parameters, full path to move files
