@@ -10,6 +10,15 @@ import datetime
 
 from prefect import task, Flow, Parameter
 from prefect.schedules import IntervalSchedule
+from prefect.storage import GitHub
+from prefect.client import Secret
+
+storage = GitHub(
+    repo='larsonaj/PrefectOpenOA',
+    path=f"./Demo",
+    ref="main",
+    access_token_secret="GITHUB_API_KEY"
+)
 
 @task(max_retries=1, retry_delay=datetime.timedelta(seconds=5))
 def extract(path):
@@ -33,7 +42,7 @@ def load(data, path):
     return 
 
 
-with Flow("my_etl") as flow:
+with Flow("my_etl", storage=storage) as flow:
     extract_path = Parameter(name="extract_path", required=True)
     load_path = Parameter(name="load_path", required=True)
     data = extract(extract_path)

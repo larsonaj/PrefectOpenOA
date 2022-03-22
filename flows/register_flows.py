@@ -5,22 +5,16 @@ from prefect.storage import Docker
 from Demo import demo_flow
 
 storage = Git(
-    repo_host="github.com",
     repo='larsonaj/PrefectOpenOA',
-    flow_path=f"demo_flow.py",
-    flow_name=demo_flow,
-    branch_name=main,
-    tag=build_tag,
-    git_token_secret_name=git_token_secret_name,
-    git_token_username=git_token_username
+    path=f"demo_flow.py",
+    ref="main",
+    access_token_secret=git_token_secret_name
 )
 
-with Flow("git-storage-example") as flow:
-    
+run_config = UniversalRun(labels=['AGENT_NAME'])
 
-# Add tasks to flow here...
-# Run on Kubernetes with a custom resource configuration
-flow.run_config = UniversalRun(labels=['AGENT_NAME'])
 
-# Store the flow in a docker image
-flow.storage = Docker()
+
+
+with Flow("git-storage-example", storage=storage, run_config=run_config) as flow:
+    demo_flow()
