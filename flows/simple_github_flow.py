@@ -1,6 +1,16 @@
 import prefect
 from prefect import Flow, task
+
 from prefect.run_configs import UniversalRun
+from prefect.storage import GitHub
+
+
+storage = GitHub(
+    repo='larsonaj/PrefectOpenOA',
+    path=f"./Demo",
+    ref="main",
+    access_token_secret="GITHUB_API_KEY"
+)
 
 @task
 def say_hello():
