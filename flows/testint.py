@@ -28,7 +28,7 @@ storage = GitHub(
 run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
 
 
-dbx_token = PrefectSecret('DBX_API_TOKEN')
+dbx_token = PrefectSecret('DBX_API_TOKEN').run()
 
 ## Setup Cluster Info
 conn = {"host":"adb-7101253137415266.6.azuredatabricks.net",
