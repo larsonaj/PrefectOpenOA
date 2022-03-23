@@ -50,15 +50,14 @@ json = {'existing_cluster_id': "0221-224854-qyhjvmno",
 
 ## Build tasks
 @task
-def say_hello():
+def say_hello(printer):
     logger = prefect.context.get("logger")
-    logger.info("Hello, Cloud!")
-    logger.info(f"{conn}")
+    logger.info(f"{printer}")
 
 ## Build flow
 
 
 with Flow("run-dbx-notebook", storage=storage, run_config=run_config) as flow:
-    say_hello()
+    say_hello(printer=conn)
     notebook_run = databricks.DatabricksSubmitRun(json=json)
     notebook_run(databricks_conn_secret=conn)
