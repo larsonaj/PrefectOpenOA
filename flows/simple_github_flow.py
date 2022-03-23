@@ -8,7 +8,7 @@ from prefect.storage import GitHub
 storage = GitHub(
     repo='larsonaj/PrefectOpenOA',
     path=f"./Demo",
-    ref="main",
+    ref="dev",
     access_token_secret="GITHUB_API_KEY"
 )
 
