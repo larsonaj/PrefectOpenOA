@@ -59,5 +59,6 @@ def say_hello():
 
 
 with Flow("run-dbx-notebook", storage=storage, run_config=run_config) as flow:
+    say_hello()
     notebook_run = databricks.DatabricksSubmitRun(json=json)
     notebook_run(databricks_conn_secret=conn)
