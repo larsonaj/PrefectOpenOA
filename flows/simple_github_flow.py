@@ -7,11 +7,12 @@ from prefect.storage import GitHub
 
 storage = GitHub(
     repo='larsonaj/PrefectOpenOA',
-    path=f"./Demo",
+    path=f"/flows/simple_github_flow.py",
     ref="dev",
     access_token_secret="GITHUB_API_KEY"
 )
 
+run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
 
 
 @task
@@ -19,7 +20,7 @@ def say_hello():
     logger = prefect.context.get("logger")
     logger.info("Hello, Cloud!")
 
-with Flow("hello-flow", run_config=UniversalRun(labels=['DESKTOP-ETPQA0T']), storage=storage) as flow:
+with Flow("hello-flow", run_config=run_config, storage=storage) as flow:
     say_hello()
 
 # Register the flow under the "tutorial" project
