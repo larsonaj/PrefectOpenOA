@@ -49,7 +49,11 @@ json = {'existing_cluster_id': "0221-224854-qyhjvmno",
 ## Setup Snowflake
 
 ## Build tasks
-
+@task
+def say_hello():
+    logger = prefect.context.get("logger")
+    logger.info("Hello, Cloud!")
+    logger.info(f"{conn}")
 
 ## Build flow
 
