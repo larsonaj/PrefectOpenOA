@@ -12,12 +12,14 @@ storage = GitHub(
     access_token_secret="GITHUB_API_KEY"
 )
 
+
+
 @task
 def say_hello():
     logger = prefect.context.get("logger")
     logger.info("Hello, Cloud!")
 
-with Flow("hello-flow", run_config=UniversalRun(labels=['DESKTOP-ETPQA0T'])) as flow:
+with Flow("hello-flow", run_config=UniversalRun(labels=['DESKTOP-ETPQA0T']), storage=storage) as flow:
     say_hello()
 
 # Register the flow under the "tutorial" project
