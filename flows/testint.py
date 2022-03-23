@@ -60,7 +60,7 @@ def say_hello(printer):
 with Flow("run-dbx-notebook", storage=storage, run_config=run_config) as flow:
     dbx_token = PrefectSecret('DBX_API_TOKEN')
     conn = {"host":"adb-7101253137415266.6.azuredatabricks.net",
-        "token":f"{dbx_token.run()}"}
+        "token":f"{dbx_token}"}
 
     json = {'existing_cluster_id': "0221-224854-qyhjvmno",
         'notebook_task': {
