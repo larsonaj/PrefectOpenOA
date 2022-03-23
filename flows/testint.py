@@ -28,17 +28,17 @@ storage = GitHub(
 run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
 
 
-dbx_token = PrefectSecret('DBX_API_TOKEN').run()
+dbx_token = PrefectSecret('DBX_API_TOKEN')
 
 ## Setup Cluster Info
-conn = {"host":"adb-7101253137415266.6.azuredatabricks.net",
-        "token":f"{dbx_token}"}
+# conn = {"host":"adb-7101253137415266.6.azuredatabricks.net",
+#         "token":f"{dbx_token.run()}"}
 
-json = {'existing_cluster_id': "0221-224854-qyhjvmno",
-    'notebook_task': {
-        'notebook_path': "/Users/alarson@captechventures.com/project_CapTech" 
-        }
-    }
+# json = {'existing_cluster_id': "0221-224854-qyhjvmno",
+#     'notebook_task': {
+#         'notebook_path': "/Users/alarson@captechventures.com/project_CapTech" 
+#         }
+#     }
 
 # json = {'existing_cluster_id': "0301-005003-1urzp405",
 #     'notebook_task': {
@@ -58,6 +58,15 @@ def say_hello(printer):
 
 
 with Flow("run-dbx-notebook", storage=storage, run_config=run_config) as flow:
+    dbx_token = PrefectSecret('DBX_API_TOKEN')
+    conn = {"host":"adb-7101253137415266.6.azuredatabricks.net",
+        "token":f"{dbx_token.run()}"}
+
+    json = {'existing_cluster_id': "0221-224854-qyhjvmno",
+        'notebook_task': {
+            'notebook_path': "/Users/alarson@captechventures.com/project_CapTech" 
+            }
+        }
     say_hello(printer=conn)
     notebook_run = databricks.DatabricksSubmitRun(json=json)
     notebook_run(databricks_conn_secret=conn)
