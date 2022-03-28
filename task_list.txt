@@ -6,7 +6,7 @@ Python >3.7 Installed
     b. python3 -m venv /path/to/new/virtual/environment
 2. Activate environment
     a. conda activate NAME
-    b. python3 myenv\Scripts\activate.bat
+    b. myenv\Scripts\activate.bat
 3. Install requirements.txt
     a. pip install -r requirements.txt
 4. Test drive the demo
