@@ -1,3 +1,4 @@
 from prefect import config
+import os
 
-config.cloud.use_local_secrets=False
+print(os.environ.get('SNOWFLAKE_PW'))

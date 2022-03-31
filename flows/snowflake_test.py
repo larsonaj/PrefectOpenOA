@@ -37,7 +37,7 @@ def say_hello(printer):
 
 
 with Flow("run-snowflake", storage=storage, run_config=run_config) as flow:
-    account_prefix = 'captech_partner'
+    account_prefix = 'captech_partner.us-east-1'
     wh_name = 'XS_WH'
     db_name = 'TEST_DB'
     schema_name = 'PUBLIC'
@@ -46,7 +46,7 @@ with Flow("run-snowflake", storage=storage, run_config=run_config) as flow:
 
     query_text = """select top 10 * from OpenOA_Scada"""
     results = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name, 
-                            database=db_name, schema=schema_name, user=user_name).run()
+                            database=db_name, schema=schema_name, user=user_name, password=password)
 
     say_hello(results)
     
