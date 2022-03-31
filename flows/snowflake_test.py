@@ -18,7 +18,7 @@ from prefect.tasks import snowflake
 
 storage = GitHub(
     repo='larsonaj/PrefectOpenOA',
-    path=f"/flows/testint.py",
+    path=f"/flows/snowflake_test.py",
     ref="dev",
     access_token_secret="GITHUB_API_KEY"
 )
