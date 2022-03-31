@@ -36,7 +36,7 @@ def say_hello(printer):
 ## Build flow
 
 
-with Flow("run-dbx-notebook", storage=storage, run_config=run_config) as flow:
+with Flow("run-snowflake", storage=storage, run_config=run_config) as flow:
     account_prefix = 'captech_partner'
     wh_name = 'XS_WH'
     db_name = 'TEST_DB'
