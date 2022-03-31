@@ -34,7 +34,7 @@ def say_hello(printer):
     logger.info(f"{printer}")
 
 ## Build flow
-
+password = PrefectSecret('SNOWFLAKE_PW')
 
 with Flow("run-snowflake", storage=storage, run_config=run_config) as flow:
     account_prefix = 'captech_partner.us-east-1'
@@ -42,11 +42,10 @@ with Flow("run-snowflake", storage=storage, run_config=run_config) as flow:
     db_name = 'TEST_DB'
     schema_name = 'PUBLIC'
     user_name = 'alarson'
-    password = PrefectSecret('SNOWFLAKE_PW')
-
+    
     query_text = """select top 10 * from OpenOA_Scada"""
-    results = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name, 
-                            database=db_name, schema=schema_name, user=user_name, password=password)
-
+    snowflake_task = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name, 
+                            database=db_name, schema=schema_name, user=user_name)
+    results = snowflake_task(password=password)
     say_hello(results)
     
