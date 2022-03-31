@@ -45,5 +45,8 @@ with Flow("run-snowflake", storage=storage, run_config=run_config) as flow:
     password = os.environ.get('SNOWFLAKE_PW')
 
     query_text = """select top 10 * from OpenOA_Scada"""
-    snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name, 
-                            database=db_name, schema=schema_name, user=user_name)
+    results = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name, 
+                            database=db_name, schema=schema_name, user=user_name).run()
+
+    say_hello(results)
+    
