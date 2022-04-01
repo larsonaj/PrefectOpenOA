@@ -26,6 +26,14 @@ storage = GitHub(
 run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
 
 ## Setup Snowflake
+account_prefix = 'captech_partner.us-east-1'
+wh_name = 'XS_WH'
+db_name = 'TEST_DB'
+schema_name = 'PUBLIC'
+user_name = 'alarson'
+
+query_text = """select top 10 * from OpenOA_Scada"""
+password = PrefectSecret('SNOWFLAKE_PW')
 
 ## Build tasks
 @task
@@ -33,17 +41,12 @@ def say_hello(printer):
     logger = prefect.context.get("logger")
     logger.info(f"{printer}")
 
+
+
 ## Build flow
-password = PrefectSecret('SNOWFLAKE_PW')
 
 with Flow("run-snowflake", storage=storage, run_config=run_config) as flow:
-    account_prefix = 'captech_partner.us-east-1'
-    wh_name = 'XS_WH'
-    db_name = 'TEST_DB'
-    schema_name = 'PUBLIC'
-    user_name = 'alarson'
-    
-    query_text = """select top 10 * from OpenOA_Scada"""
+
     snowflake_task = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name, 
                             database=db_name, schema=schema_name, user=user_name)
     results = snowflake_task(password=password)
