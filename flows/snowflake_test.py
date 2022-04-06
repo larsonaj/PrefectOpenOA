@@ -23,7 +23,7 @@ storage = GitHub(
     access_token_secret="GITHUB_API_KEY"
 )
 
-run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
+run_config = UniversalRun(labels=['DESKTOP-ETPQA0T', 'mssl-alarson'])
 
 ## Setup Snowflake
 account_prefix = 'captech_partner.us-east-1'
