@@ -23,7 +23,7 @@ storage = GitHub(
     access_token_secret="GITHUB_API_KEY"
 )
 
-run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
+run_config = UniversalRun(labels=['DESKTOP-ETPQA0T', 'mssl-alarson'])
 
 ## Setup Snowflake
 account_prefix = 'captech_partner.us-east-1'
@@ -46,9 +46,7 @@ def say_hello(printer):
 ## Build flow
 
 with Flow("run-snowflake", storage=storage, run_config=run_config) as flow:
-
-    snowflake_task = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name, 
+    snowflake_task = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name,
                             database=db_name, schema=schema_name, user=user_name)
     results = snowflake_task(password=password)
     say_hello(results)
-    
