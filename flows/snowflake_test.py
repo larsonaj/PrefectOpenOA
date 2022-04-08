@@ -1,6 +1,7 @@
 from cProfile import run
 import prefect
 import os
+import datetime
 
 
 # Import tasks
@@ -14,7 +15,7 @@ from prefect import config
 from prefect.run_configs import UniversalRun
 from prefect.storage import GitHub
 from prefect.tasks import snowflake
-
+from prefect.schedules import IntervalSchedule
 
 storage = GitHub(
     repo='larsonaj/PrefectOpenOA',
@@ -35,6 +36,12 @@ user_name = 'alarson'
 query_text = """select top 10 * from OpenOA_Scada"""
 password = PrefectSecret('SNOWFLAKE_PW')
 
+## Build task constructors
+
+snowflake_task_specs = {'max_retries':5,
+                        'retry_delay':datetime.timedelta(seconds=5)}
+
+
 ## Build tasks
 @task
 def say_hello(printer):
@@ -42,11 +49,10 @@ def say_hello(printer):
     logger.info(f"{printer}")
 
 
-
 ## Build flow
 
 with Flow("run-snowflake", storage=storage, run_config=run_config) as flow:
-    snowflake_task = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name,
-                            database=db_name, schema=schema_name, user=user_name)
-    results = snowflake_task(password=password)
+    snowflake_run = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name,
+                        database=db_name, schema=schema_name, user=user_name, **snowflake_task_specs)
+    results = snowflake_run(password=password)
     say_hello(results)
