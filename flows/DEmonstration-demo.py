@@ -36,7 +36,7 @@ snowflake_task_specs = {'max_retries':5,
 
 
 ## Build tasks
-@task
+@task(name='Printer Task')
 def say_hello(printer):
     logger = prefect.context.get("logger")
     logger.info(f"{printer}")
