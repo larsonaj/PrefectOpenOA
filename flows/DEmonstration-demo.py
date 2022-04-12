@@ -19,7 +19,7 @@ from prefect.schedules import IntervalSchedule
 
 run_config = UniversalRun(labels=['mssl-alarson'])
 
-## Setup Snowflake
+## Setup Snowflake parameters
 account_prefix = 'captech_partner.us-east-1'
 wh_name = 'XS_WH'
 db_name = 'TEST_DB'
@@ -41,6 +41,10 @@ def say_hello(printer):
     logger = prefect.context.get("logger")
     logger.info(f"{printer}")
 
+@task(name='New Printer Task')
+def new_printer(item):
+    print(item)
+    pass
 
 ## Build flow
 
@@ -49,3 +53,4 @@ with Flow("run-snowflake-demo", run_config=run_config) as flow:
                         database=db_name, schema=schema_name, user=user_name, **snowflake_task_specs)
     results = snowflake_run(password=password)
     say_hello(results)
+    new_printer("test")
