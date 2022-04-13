@@ -17,12 +17,12 @@ from prefect.tasks import snowflake
 from prefect.schedules import IntervalSchedule
 from prefect.storage import GitHub
 
-# storage = GitHub(
-#     repo='larsonaj/PrefectOpenOA',
-#     path=f"/flows/DEmonstration-demo.py",
-#     ref="dev",
-#     access_token_secret="GITHUB_API_KEY"
-# )
+storage = GitHub(
+    repo='larsonaj/PrefectOpenOA',
+    path=f"/flows/DEmonstration-demo.py",
+    ref="dev",
+    access_token_secret="GITHUB_API_KEY"
+)
 
 run_config = UniversalRun(labels=['mssl-alarson'])
 
@@ -55,7 +55,7 @@ def say_hello(printer):
 
 ## Build flow
 
-with Flow("run-snowflake-demo", run_config=run_config) as flow:
+with Flow("run-snowflake-demo", run_config=run_config, storage=storage) as flow:
     snowflake_run = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name,
                         database=db_name, schema=schema_name, user=user_name, **snowflake_task_specs)
     results = snowflake_run(password=password)
