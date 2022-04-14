@@ -17,9 +17,12 @@ from prefect.storage import GitHub
 from prefect.tasks import snowflake
 
 ## Parse metadata
+
 # storage
 git_raw = open('.\metadata\storage.json')
 git_parsed = json.loads(git_raw)
+
+
 
 # task info
 snowflake_raw = open('.\metadata\adls_to_snowflake.json')
@@ -29,6 +32,8 @@ snowflake_conn = snowflake_parsed["snowflake_connection"]
 dbx_raw = open('.\metadata\databricks_notebook.json')
 dbx_parsed = json.loads(dbx_raw)
 dbx_run_info = dbx_parsed["databricks_openoa"]
+
+
 
 ## Configure Context
 storage = GitHub(
@@ -90,42 +95,39 @@ snowflake_specs = snowflake_parsed['task_specs']
 # snowflake_specs = {'max_retries':5,
 #                     'retry_delay':datetime.timedelta(seconds=5),
 #                     'upstream_task': ['notebook_run']}
+
 dbt_specs = {}
 
 
 
 with Flow("Open-OA-etl", storage=storage, run_config=run_config) as flow:
-    # task to grab JSON configs from ADLS based on "flow_type"
-
-    # parse JSON into Snowflake part and ADLS part
-
     # Run DBX Notebook
-    notebook_run = databricks.DatabricksSubmitRun(json=json)
+    notebook_run = databricks.DatabricksSubmitRun(json=dbx_payload)
     notebook_run(databricks_conn_secret=dbx_password)
 
     # Ingest with Snowflake
     # SCADA
     scada_query = actions.ingest_scada_to_snowflake() ## grab from ADLS
     snowflake_task = snowflake.SnowflakeQuery(query=scada_query, account=account_prefix, warehouse=wh_name,
-                            database=db_name, schema=schema_name, user=user_name)
+                            database=db_name, schema=schema_name, user=user_name, **snowflake_task_specs)
     snowflake_task(password=sn_password)
 
     # Reanalysis
     reanal_query = actions.ingest_reanalysis_to_snowflake()
     snowflake_task = snowflake.SnowflakeQuery(query=reanal_query, account=account_prefix, warehouse=wh_name,
-                            database=db_name, schema=schema_name, user=user_name)
+                            database=db_name, schema=schema_name, user=user_name, **snowflake_task_specs)
     snowflake_task(password=sn_password)
 
     # Master Data
     mdm_query = actions.ingest_masterdata_to_snowflake()
     snowflake_task = snowflake.SnowflakeQuery(query=mdm_query, account=account_prefix, warehouse=wh_name,
-                            database=db_name, schema=schema_name, user=user_name)
+                            database=db_name, schema=schema_name, user=user_name, **snowflake_task_specs)
     snowflake_task(password=sn_password)
 
     # Curtailment
     curt_query = actions.ingest_curtailment_to_snowflake()
     snowflake_task = snowflake.SnowflakeQuery(query=curt_query, account=account_prefix, warehouse=wh_name,
-                            database=db_name, schema=schema_name, user=user_name)
+                            database=db_name, schema=schema_name, user=user_name, **snowflake_task_specs)
     snowflake_task(password=sn_password)
 
     # Run DBT Model
