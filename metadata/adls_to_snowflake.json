@@ -1,5 +1,4 @@
-{"type": "ADLS_TO_SNOWFLAKE",
-"snowflake_connection": {
+{"snowflake_connection": {
   "account_prefix": "captech_partner.us-east-1"
   "warehouse_name": "XS_WH",
   "database_name": "TEST_DB",
@@ -9,5 +8,7 @@
   },
 "task_specs":
   {"max_retries":5,
-    "retry_delay", "datetime.timedelta(seconds=5)"}
+    "retry_delay": "datetime.timedelta(seconds=5)"},
+"queries":
+  {"load_scada":}
 }

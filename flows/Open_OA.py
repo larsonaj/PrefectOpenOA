@@ -1,5 +1,7 @@
 import prefect
 
+# Import python helpers
+import json
 
 # Import tasks
 from prefect.tasks import databricks
@@ -14,54 +16,80 @@ from prefect.run_configs import UniversalRun
 from prefect.storage import GitHub
 from prefect.tasks import snowflake
 
+## Parse metadata
+# storage
+git_raw = open('.\metadata\storage.json')
+git_parsed = json.loads(git_raw)
 
+# task info
+snowflake_raw = open('.\metadata\adls_to_snowflake.json')
+snowflake_parsed = json.loads(snowflake_raw)
+snowflake_conn = snowflake_parsed["snowflake_connection"]
+
+dbx_raw = open('.\metadata\databricks_notebook.json')
+dbx_parsed = json.loads(dbx_raw)
+dbx_run_info = dbx_parsed["databricks_openoa"]
 
 ## Configure Context
 storage = GitHub(
-    repo='larsonaj/PrefectOpenOA',
-    path=f"/flows/Open_OA.py",
-    ref="dev",
-    access_token_secret="GITHUB_API_KEY"
+    repo=git_parsed['repo'],
+    path=git_parsed['path'],
+    ref=git_parsed['branch'],
+    access_token_secret=git_prased['secret_name']
 )
+
+# storage = GitHub(
+#     repo='larsonaj/PrefectOpenOA',
+#     path=f"/flows/Open_OA.py",
+#     ref="dev",
+#     access_token_secret="GITHUB_API_KEY"
+# )
 
 run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
 
-flow_type = 'ADLS_TO_SNOWFLAKE'
-
-
-
 
 ## Run Variables
-if level == 'Prod':
-    sn_password = PrefectSecret('SNOWFLAKE_PW')
-else:
-    sn_password = PrefectSecret('DEV_SNOWFLAKE_PW')
 
-dbx_password = PrefectSecret('DBX_API_TOKEN')
+# Dbx information
+dbx_pw_name = dbx_run_info['secret_name']
+dbx_password = PrefectSecret(dbx_pw_name)
 
-json = {'existing_cluster_id': "0221-224854-qyhjvmno",
-    'notebook_task': {
-        'notebook_path': "/Users/alarson@captechventures.com/project_CapTech"
-        }
-    }
+# dbx_password = PrefectSecret('DBX_API_TOKEN')
+
+dbx_payload = dbx_run_info['run_payload']
+
+# json = {'existing_cluster_id': "0221-224854-qyhjvmno",
+#     'notebook_task': {
+#         'notebook_path': "/Users/alarson@captechventures.com/project_CapTech"
+#         }
+#     }
 
 # Snowflake account
-account_prefix = 'captech_partner.us-east-1'
-wh_name = 'XS_WH'
-db_name = 'TEST_DB'
-schema_name = 'PUBLIC'
-user_name = 'alarson'
+account_prefix = snowflake_conn['account_prefix']
+wh_name = snowflake_conn['warehouse_name']
+db_name = snowflake_conn['database_name']
+schema_name = snowflake_conn['schema_name']
+user_name = snowflake_conn['user_name']
+sn_pw_name = snowflake_conn['password_secret']
 
+sn_password = PrefectSecret(sn_pw_name)
 
-{query: , warehouse: , database: ,...}
+# sn_password = PrefectSecret('SNOWFLAKE_PW')
 
-{json: {cluster_id:, notebook_task: {notebook_path}}}
+# account_prefix = 'captech_partner.us-east-1'
+# wh_name = 'XS_WH'
+# db_name = 'TEST_DB'
+# schema_name = 'PUBLIC'
+# user_name = 'alarson'
+
 
 ## Task specifications
 dbx_specs = {}
-snowflake_specs = {'max_retries':5,
-                    'retry_delay':datetime.timedelta(seconds=5),
-                    'upstream_task': ['notebook_run']}
+snowflake_specs = snowflake_parsed['task_specs']
+
+# snowflake_specs = {'max_retries':5,
+#                     'retry_delay':datetime.timedelta(seconds=5),
+#                     'upstream_task': ['notebook_run']}
 dbt_specs = {}
 
 
