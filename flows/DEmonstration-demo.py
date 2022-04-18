@@ -65,4 +65,4 @@ with Flow("run-snowflake-demo", run_config=run_config, storage=storage) as flow:
     # new_printer("test")
     # flow.add_edge(password, results)
     # flow.add_edge(results, say_hello)
-    flow.add_edge(logging, print_results)
+    flow.add_edge(results, print_results)
