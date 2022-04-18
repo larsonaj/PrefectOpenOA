@@ -34,7 +34,7 @@ schema_name = 'PUBLIC'
 user_name = 'alarson'
 
 query_text = """select top 10 * from OpenOA_Scada"""
-password = PrefectSecret('SNOWFLAKE_PW')
+
 
 
 ## Build task specifications
@@ -56,12 +56,13 @@ def new_printer(item):
 ## Build flow
 
 with Flow("run-snowflake-demo", run_config=run_config, storage=storage) as flow:
+    password = PrefectSecret('SNOWFLAKE_PW')
     snowflake_run = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name,
                         database=db_name, schema=schema_name, user=user_name, **snowflake_task_specs)
     results = snowflake_run(password=password)
     say_hello(results)
     new_printer("test")
-    flow.add_edge(SNOWFLAKE_PW, snowflake_run)
+    flow.add_edge(password, snowflake_run)
     flow.add_edge(snowflake_run, results)
     flow.add_edge(results, say_hello)
     flow.add_edge(say_hello, new_printer)
