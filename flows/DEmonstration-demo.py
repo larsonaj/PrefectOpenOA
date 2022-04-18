@@ -47,11 +47,11 @@ snowflake_task_specs = {'max_retries':5,
 def say_hello(printer):
     logger = prefect.context.get("logger")
     logger.info(f"{printer}")
-
-@task(name='New Printer Task')
-def new_printer(item):
-    print(item)
-    pass
+#
+# @task(name='New Printer Task')
+# def new_printer(item):
+#     print(item)
+#     pass
 
 ## Build flow
 
@@ -61,5 +61,5 @@ with Flow("run-snowflake-demo", run_config=run_config, storage=storage) as flow:
                         database=db_name, schema=schema_name, user=user_name, **snowflake_task_specs)
     results = snowflake_run(password=password)
     logging = say_hello(results)
-    print_results = new_printer(results)
+    #print_results = new_printer('test')
     #flow.add_edge(results, print_results)
