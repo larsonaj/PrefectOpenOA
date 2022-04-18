@@ -60,7 +60,9 @@ with Flow("run-snowflake-demo", run_config=run_config, storage=storage) as flow:
     snowflake_run = snowflake.SnowflakeQuery(query=query_text, account=account_prefix, warehouse=wh_name,
                         database=db_name, schema=schema_name, user=user_name, **snowflake_task_specs)
     results = snowflake_run(password=password)
-    say_hello(results)
-    new_printer("test")
-    flow.add_edge(password, results)
-    flow.add_edge(results, new_printer)
+    logging = say_hello(results)
+    print_results = new_printer('test')
+    # new_printer("test")
+    # flow.add_edge(password, results)
+    # flow.add_edge(results, say_hello)
+    flow.add_edge(logging, print_results)
