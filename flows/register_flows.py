@@ -1,10 +1,10 @@
 from prefect import Flow
 from prefect.run_configs import UniversalRun
-from prefect.storage import Docker
+from prefect.storage import GitHub
 
 from Demo import demo_flow
 
-storage = Git(
+storage = GitHub(
     repo='larsonaj/PrefectOpenOA',
     path=f"demo_flow.py",
     ref="main",
