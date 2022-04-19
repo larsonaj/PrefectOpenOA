@@ -1,0 +1,11 @@
+{"github_openoa":
+  {"repo": "larsonaj/PrefectOpenOA",
+   "path":"/flows/Open_OA.py",
+   "branch":"dev",
+   "secret_name":"GITHUB_API_KEY"}
+ "github_other_flow":
+   {"repo": "larsonaj/PrefectOpenOA",
+    "path":"/flows/Open_OA.py",
+    "branch":"dev",
+    "secret_name":"GITHUB_API_KEY"}
+}
