@@ -41,9 +41,11 @@ with Flow("my_etl") as flow:
     tdata = transform(data)
     load(tdata, load_path)
 
+
 current_path = os.curdir
 extract_path = rf"{current_path}/source/values.csv"
 load_path = rf"{current_path}/sink/tvalues.csv"
+
 
 flow.run(parameters={
     "extract_path": extract_path, 

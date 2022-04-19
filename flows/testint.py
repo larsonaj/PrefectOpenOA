@@ -31,7 +31,7 @@ run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
 #dbx_token = PrefectSecret('DBX_API_TOKEN')
 
 ## Setup Cluster Info
-# conn = {"host":"adb-7101253137415266.6.azuredatabricks.net",
+
 #         "token":f"{dbx_token.run()}"}
 
 # json = {'existing_cluster_id': "0221-224854-qyhjvmno",
