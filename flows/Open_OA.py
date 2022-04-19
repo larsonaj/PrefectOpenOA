@@ -98,9 +98,24 @@ snowflake_specs = snowflake_parsed['task_specs']
 
 dbt_specs = {}
 
+@task('Metadata') ## WORK ON THIS
+def get_metadata(task_type):
+    ADLS_CONNECTION = $ADLS_CONNECTION$
+    GET_JSON = 'ADLS/task_type.json'
 
 
 with Flow("Open-OA-etl", storage=storage, run_config=run_config) as flow:
+    # Get Metadata
+    dbx = get_metadata("databricks_notebook.json")
+    dbx_parsed = json.loads(dbx)
+    dbx_run_info = dbx_parsed["databricks_openoa"]
+
+    dbx_pw_name = dbx_run_info['secret_name']
+    dbx_password = PrefectSecret(dbx_pw_name)
+    dbx_payload = dbx_run_info['run_payload']
+
+    snowflake_raw = get_metadata("adls_to_snowflake.json")
+
     # Run DBX Notebook
     notebook_run = databricks.DatabricksSubmitRun(json=dbx_payload)
     notebook_run(databricks_conn_secret=dbx_password)

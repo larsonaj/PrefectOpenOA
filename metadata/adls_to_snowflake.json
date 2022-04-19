@@ -8,7 +8,5 @@
   },
 "task_specs":
   {"max_retries":5,
-    "retry_delay": "datetime.timedelta(seconds=5)"},
-"queries":
-  {"load_scada":}
+    "retry_delay": "datetime.timedelta(seconds=5)"}
 }
