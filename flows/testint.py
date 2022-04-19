@@ -1,37 +1,71 @@
+from cProfile import run
 import prefect
-from prefect import Flow, task
-import sys
+
+
+# Import tasks
 from prefect.tasks import databricks
-from PrefectOpenOA.actions.snowflake_ingest import ingest_scada_to_snowflake
+from prefect import Flow, task
 
-sys.path.append('.')
-
-import actions.dbx
-
-
-
-# @task(name="Run Databricks Ingest")
-# def run_dbx_notebook():
-#     actions.dbx.run_dbx_notebook(nb_path="/Users/alarson@captechventures.com/project_CapTech",
-#                                 cluster_id="0301-005003-1urzp405")
+# Import helpers
+from prefect.client import Secret
+from prefect.tasks.secrets import PrefectSecret
+from prefect import config
+from prefect.run_configs import UniversalRun
+from prefect.storage import GitHub
 
 
-conn = {"host":"adb-7101253137415266.6.azuredatabricks.net",
-        "token":"dapibf1a2e725dbe5a79cd1dd14a9a55dcbd"}
+## Configure Context
+config.cloud.use_local_secrets=False
 
-json = {'existing_cluster_id': "0301-005003-1urzp405",
-    'notebook_task': {
-        'notebook_path': "/Users/alarson@captechventures.com/project_CapTech" 
+
+storage = GitHub(
+    repo='larsonaj/PrefectOpenOA',
+    path=f"/flows/testint.py",
+    ref="dev",
+    access_token_secret="GITHUB_API_KEY"
+)
+
+run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
+
+
+#dbx_token = PrefectSecret('DBX_API_TOKEN')
+
+## Setup Cluster Info
+
+#         "token":f"{dbx_token.run()}"}
+
+# json = {'existing_cluster_id': "0221-224854-qyhjvmno",
+#     'notebook_task': {
+#         'notebook_path': "/Users/alarson@captechventures.com/project_CapTech" 
+#         }
+#     }
+
+# json = {'existing_cluster_id': "0301-005003-1urzp405",
+#     'notebook_task': {
+#         'notebook_path': "/Users/alarson@captechventures.com/project_CapTech" 
+#         }
+#     }
+
+## Setup Snowflake
+
+## Build tasks
+@task
+def say_hello(printer):
+    logger = prefect.context.get("logger")
+    logger.info(f"{printer}")
+
+## Build flow
+
+
+with Flow("run-dbx-notebook", storage=storage, run_config=run_config) as flow:
+    conn = PrefectSecret('DBX_API_TOKEN')
+
+    json = {'existing_cluster_id': "0221-224854-qyhjvmno",
+        'notebook_task': {
+            'notebook_path': "/Users/alarson@captechventures.com/project_CapTech" 
+            }
         }
-    }
-
-
-ingest_scada_to_snowflake
-
-
-with Flow("move-doc") as flow:
+        
+    say_hello(printer=conn)
     notebook_run = databricks.DatabricksSubmitRun(json=json)
     notebook_run(databricks_conn_secret=conn)
-
-
-flow.run()
