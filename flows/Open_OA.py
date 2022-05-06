@@ -52,7 +52,6 @@ storage = GitHub(
 
 run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
 
-<<<<<<< HEAD
 ## Run Variables
 # DBX
 sn_password = PrefectSecret('SNOWFLAKE_PW')
@@ -71,53 +70,6 @@ schema_name = 'PUBLIC'
 user_name = 'alarson'
 
 query_text = """select top 10 * from OpenOA_Scada"""
-=======
-
-## Run Variables
-
-# Dbx information
-dbx_pw_name = dbx_run_info['secret_name']
-dbx_password = PrefectSecret(dbx_pw_name)
-
-# dbx_password = PrefectSecret('DBX_API_TOKEN')
-
-dbx_payload = dbx_run_info['run_payload']
-
-# json = {'existing_cluster_id': "0221-224854-qyhjvmno",
-#     'notebook_task': {
-#         'notebook_path': "/Users/alarson@captechventures.com/project_CapTech"
-#         }
-#     }
-
-# Snowflake account
-account_prefix = snowflake_conn['account_prefix']
-wh_name = snowflake_conn['warehouse_name']
-db_name = snowflake_conn['database_name']
-schema_name = snowflake_conn['schema_name']
-user_name = snowflake_conn['user_name']
-sn_pw_name = snowflake_conn['password_secret']
-
-sn_password = PrefectSecret(sn_pw_name)
-
-# sn_password = PrefectSecret('SNOWFLAKE_PW')
-
-# account_prefix = 'captech_partner.us-east-1'
-# wh_name = 'XS_WH'
-# db_name = 'TEST_DB'
-# schema_name = 'PUBLIC'
-# user_name = 'alarson'
-
-
-## Task specifications
-dbx_specs = {}
-snowflake_specs = snowflake_parsed['task_specs']
-
-# snowflake_specs = {'max_retries':5,
-#                     'retry_delay':datetime.timedelta(seconds=5),
-#                     'upstream_task': ['notebook_run']}
-
-dbt_specs = {}
->>>>>>> fe2a3df6434916b4f458a68c87730f6b32298481
 
 @task('Metadata') ## WORK ON THIS
 def get_metadata(task_type):
