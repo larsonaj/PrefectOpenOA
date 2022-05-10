@@ -24,21 +24,25 @@ from prefect.tasks import snowflake
 with open(r'.\metadata\storage.json', 'r') as f:
     git_parsed = json.loads(f.read())
 
+flow_storage = git_parsed['github_openoa']
 
 
 # task info
 with open(r'.\metadata\adls_to_snowflake.json', 'r') as f:
     snowflake_parsed = json.loads(f.read())
 
+snowflake_conn = snowflake_parsed["snowflake_connection"]
+
 
 with open(r'.\metadata\databricks_notebook.json', 'r') as f:
     dbx_parsed = json.loads(f.read())
 
-flow_storage = git_parsed['github_openoa']
-snowflake_conn = snowflake_parsed["snowflake_connection"]
 dbx_run_info = dbx_parsed["databricks_openoa"]
 
-## Configure Context
+print(flow_storage['secret_name'])
+
+
+# Configure Context
 storage = GitHub(
     repo=flow_storage['repo'],
     path=flow_storage['path'],

@@ -6,7 +6,7 @@
 		"database_name": "TEST_DB",
 		"schema_name": "PUBLIC",
 		"user_name": "alarson",
-		"password_secret": "SNOWFLAKE_PW"
+		"password_secret": "\"SNOWFLAKE_PW\""
 	},
 	"task_specs": 
   {
