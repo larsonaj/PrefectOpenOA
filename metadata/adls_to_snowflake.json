@@ -1,14 +1,20 @@
-{"snowflake_connection": {
-  "account_prefix": "captech_partner.us-east-1",
-  "warehouse_name": "XS_WH",
-  "database_name": "TEST_DB",
-  "schema_name": "PUBLIC",
-  "user_name": "alarson",
-  "password_secret": "SNOWFLAKE_PW"
-  },
-"task_specs":
-  {"max_retries":5,
-    "retry_delay": "datetime.timedelta(seconds=5)"},
-"queries":
-  {"demo_query": "select top 10 * from OpenOA_Scada"}
+{
+	"snowflake_connection": 
+  {
+		"account_prefix": "captech_partner.us-east-1",
+		"warehouse_name": "XS_WH",
+		"database_name": "TEST_DB",
+		"schema_name": "PUBLIC",
+		"user_name": "alarson",
+		"password_secret": "SNOWFLAKE_PW"
+	},
+	"task_specs": 
+  {
+		"max_retries": 5,
+		"retry_delay": "datetime.timedelta(seconds=5)"
+	},
+	"queries": 
+  {
+		"demo_query": "select top 10 * from OpenOA_Scada"
+	}
 }

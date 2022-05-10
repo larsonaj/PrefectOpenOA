@@ -1,9 +1,10 @@
 {"databricks_openoa":
-  "secret_name": "DBX_API_TOKEN",
+  {"secret_name": "DBX_API_TOKEN",
   "run_payload":
     {"existing_cluster_id": "0221-224854-qyhjvmno",
       "notebook_task": {
         "notebook_path": "/Users/alarson@captechventures.com/project_CapTech"
         }
     }
+  }
 }
