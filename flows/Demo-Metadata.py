@@ -21,20 +21,20 @@ from prefect.tasks import snowflake
 ## Parse metadata
 
 # storage
-with open(r'.\metadata\storage.json', 'r') as f:
+with open('.\metadata\storage.json', 'r') as f:
     git_parsed = json.loads(f.read())
 
 flow_storage = git_parsed['github_openoa']
 
 
 # task info
-with open(r'.\metadata\adls_to_snowflake.json', 'r') as f:
+with open('.\metadata\adls_to_snowflake.json', 'r') as f:
     snowflake_parsed = json.loads(f.read())
 
 snowflake_conn = snowflake_parsed["snowflake_connection"]
 
 
-with open(r'.\metadata\databricks_notebook.json', 'r') as f:
+with open('.\metadata\databricks_notebook.json', 'r') as f:
     dbx_parsed = json.loads(f.read())
 
 dbx_run_info = dbx_parsed["databricks_openoa"]
