@@ -59,10 +59,10 @@ print(flow_storage['secret_name'])
 
 # Configure Context
 storage = GitHub(
-    repo=flow_storage['repo'],
-    path=flow_storage['path'],
-    ref=flow_storage['branch'],
-    access_token_secret=flow_storage['secret_name']
+    repo=flow_storage['repo'].str(),
+    path=flow_storage['path'].str(),
+    ref=flow_storage['branch'].str(),
+    access_token_secret=flow_storage['secret_name'].str()
 )
 
 run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
