@@ -40,7 +40,7 @@ storage = GitHub(
     repo=git_parsed['repo'],
     path=git_parsed['path'],
     ref=git_parsed['branch'],
-    access_token_secret=git_prased['secret_name']
+    access_token_secret=git_parsed['secret_name']
 )
 
 # storage = GitHub(
