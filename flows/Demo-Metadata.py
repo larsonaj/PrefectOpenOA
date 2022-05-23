@@ -32,21 +32,22 @@ tc = service.get_table_client('prefectmetadata')
 git_options = tc.get_entity(partition_key="metadata", row_key="github_openoa")
 
 
+
 # # storage
 #with open('.\metadata\storage.json', 'r') as f:
-#git_parsed = json.loads(git_options.read())
+git_parsed = json.loads(git_options['jsonvalue'])
 
-flow_storage = git_options['github_openoa']
+# flow_storage = git_parsed['github_openoa']
 
 
 # task info
 #with open('.\metadata\adls_to_snowflake.json', 'r') as f:
 
-sf_option = tc.get_entity(partition_key="metadata", row_key="BaseAccount")
+sf_option = tc.get_entity(partition_key="metadata", row_key="snowflake_connection")
 
-# snowflake_parsed = json.loads(sf_option.read())
+snowflake_parsed = json.loads(sf_option['jsonvalue'])
 
-snowflake_conn = sf_option["snowflake_connection"]
+snowflake_conn = snowflake_parsed["snowflake_connection"]
 
 
 # with open('.\metadata\databricks_notebook.json', 'r') as f:
@@ -54,15 +55,15 @@ snowflake_conn = sf_option["snowflake_connection"]
 
 # dbx_run_info = dbx_parsed["databricks_openoa"]
 
-print(flow_storage['secret_name'])
+# print(git_parsed['repo'])
 
 
 # Configure Context
 storage = GitHub(
-    repo=flow_storage['repo'].str(),
-    path=flow_storage['path'].str(),
-    ref=flow_storage['branch'].str(),
-    access_token_secret=flow_storage['secret_name'].str()
+    repo=git_parsed['repo'].str(),
+    path=git_parsed['path'].str(),
+    ref=git_parsed['branch'].str(),
+    access_token_secret=git_parsed['secret_name'].str()
 )
 
 run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
@@ -70,12 +71,12 @@ run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
 ## Build task specifications
 
 # Snowflake account
-account_prefix = snowflake_conn['account_prefix']
-wh_name = snowflake_conn['warehouse_name']
-db_name = snowflake_conn['database_name']
-schema_name = snowflake_conn['schema_name']
-user_name = snowflake_conn['user_name']
-sn_pw_name = snowflake_conn['password_secret']
+account_prefix = snowflake_parsed['account_prefix']
+wh_name = snowflake_parsed['warehouse_name']
+db_name = snowflake_parsed['database_name']
+schema_name = snowflake_parsed['schema_name']
+user_name = snowflake_parsed['user_name']
+sn_pw_name = snowflake_parsed['password_secret']
 
 sn_password = PrefectSecret(sn_pw_name)
 
