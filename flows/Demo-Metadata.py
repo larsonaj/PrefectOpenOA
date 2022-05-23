@@ -34,9 +34,9 @@ git_options = tc.get_entity(partition_key="metadata", row_key="github_openoa")
 
 # # storage
 #with open('.\metadata\storage.json', 'r') as f:
-git_parsed = json.loads(git_options.read())
+#git_parsed = json.loads(git_options.read())
 
-flow_storage = git_parsed['github_openoa']
+flow_storage = git_options['github_openoa']
 
 
 # task info
@@ -44,9 +44,9 @@ flow_storage = git_parsed['github_openoa']
 
 sf_option = tc.get_entity(partition_key="metadata", row_key="BaseAccount")
 
-snowflake_parsed = json.loads(sf_option.read())
+# snowflake_parsed = json.loads(sf_option.read())
 
-snowflake_conn = snowflake_parsed["snowflake_connection"]
+snowflake_conn = sf_option["snowflake_connection"]
 
 
 # with open('.\metadata\databricks_notebook.json', 'r') as f:
