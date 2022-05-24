@@ -60,10 +60,10 @@ snowflake_conn = snowflake_parsed["snowflake_connection"]
 
 # Configure Context
 storage = GitHub(
-    repo=git_parsed['repo'].str(),
-    path=git_parsed['path'].str(),
-    ref=git_parsed['branch'].str(),
-    access_token_secret=git_parsed['secret_name'].str()
+    repo=git_parsed['repo'],
+    path=git_parsed['path'],
+    ref=git_parsed['branch'],
+    access_token_secret=git_parsed['secret_name']
 )
 
 run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
