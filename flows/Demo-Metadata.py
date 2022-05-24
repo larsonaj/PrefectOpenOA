@@ -59,6 +59,9 @@ snowflake_conn = snowflake_parsed["snowflake_connection"]
 # dbx_run_info = dbx_parsed["databricks_openoa"]
 
 # print(git_parsed['repo'])
+# print(git_parsed['path'])
+# print(git_parsed['branch'])
+# print(git_parsed['secret_name'])
 
 
 # Configure Context
