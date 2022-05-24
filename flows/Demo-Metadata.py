@@ -71,21 +71,22 @@ run_config = UniversalRun(labels=['DESKTOP-ETPQA0T'])
 ## Build task specifications
 
 # Snowflake account
-account_prefix = snowflake_parsed['account_prefix']
-wh_name = snowflake_parsed['warehouse_name']
-db_name = snowflake_parsed['database_name']
-schema_name = snowflake_parsed['schema_name']
-user_name = snowflake_parsed['user_name']
-sn_pw_name = snowflake_parsed['password_secret']
+account_prefix = snowflake_conn['account_prefix']
+wh_name = snowflake_conn['warehouse_name']
+db_name = snowflake_conn['database_name']
+schema_name = snowflake_conn['schema_name']
+user_name = snowflake_conn['user_name']
+sn_pw_name = snowflake_conn['password_secret']
 
 sn_password = PrefectSecret(sn_pw_name)
 
 
 ## Task specifications
 
-# snowflake_specs = snowflake_parsed['task_specs']
-snowflake_task_specs = {'max_retries':5,
-                        'retry_delay':datetime.timedelta(seconds=5)}
+snowflake_specs = snowflake_parsed['task_specs']
+
+snowflake_task_specs = {'max_retries':snowflake_specs['max_retries'],
+                        'retry_delay':datetime.timedelta(seconds=snowflake_specs['retry_delay'])}
 
 query = snowflake_parsed['queries']
 
