@@ -23,7 +23,10 @@ from prefect.tasks import snowflake
 from azure.core.credentials import AzureNamedKeyCredential
 from azure.data.tables import TableServiceClient
 
-credential = AzureNamedKeyCredential("jlarrimoresadl", "gGhr1bwuV7JbsK4PN4kClSBoBkFrbR/Z3Q3d2ag84z65gi4ntNvJgdo7J9QKMczujaf9hGZwMjy+b3sePLVOTA==")
+
+adls_key = Secret('ADLS_TOKEN').get()
+
+credential = AzureNamedKeyCredential("jlarrimoresadl", adls_key)
 
 service = TableServiceClient(endpoint="https://jlarrimoresadl.table.core.windows.net", credential=credential)
 
